@@ -4,7 +4,6 @@ import React, { useState } from 'react'
 import { HandleProps, CopyrightType } from '~/types'
 import { useSWRHydrated } from '~/hooks/useSWRHydrated'
 import { toast } from 'sonner'
-import { motion } from 'framer-motion'
 import {
   Button,
   Card,
@@ -20,9 +19,10 @@ import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-  Spinner, Switch
+  Spinner,
+  Switch,
 } from '@nextui-org/react'
-import { Eye, EyeOff, Pencil, Trash } from 'lucide-react'
+import { Eye, EyeOff, Pencil, Trash, BadgeCheck, BadgeX } from 'lucide-react'
 import { useButtonStore } from '~/app/providers/button-store-Providers'
 
 export default function CopyrightList(props : Readonly<HandleProps>) {
@@ -32,6 +32,8 @@ export default function CopyrightList(props : Readonly<HandleProps>) {
   const [deleteLoading, setDeleteLoading] = useState(false)
   const [updateCopyrightLoading, setUpdateCopyrightLoading] = useState(false)
   const [updateCopyrightId, setUpdateCopyrightId] = useState(0)
+  const [updateCopyrightDefaultLoading, setUpdateCopyrightDefaultLoading] = useState(false)
+  const [updateCopyrightDefaultId, setUpdateCopyrightDefaultId] = useState(0)
   const { setCopyrightEdit, setCopyrightEditData } = useButtonStore(
     (state) => state,
   )
@@ -85,21 +87,39 @@ export default function CopyrightList(props : Readonly<HandleProps>) {
     }
   }
 
+  async function updateCopyrightDefault(id: number, defaultValue: number) {
+    try {
+      setUpdateCopyrightDefaultId(id)
+      setUpdateCopyrightDefaultLoading(true)
+      const res = await fetch(`/api/v1/update-copyright-default`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          id,
+          default: defaultValue
+        }),
+      })
+      if (res.status === 200) {
+        toast.success('更新成功！')
+        await mutate()
+      } else {
+        toast.error('更新失败！')
+      }
+    } catch (e) {
+      toast.error('更新失败！')
+    } finally {
+      setUpdateCopyrightDefaultId(0)
+      setUpdateCopyrightDefaultLoading(false)
+    }
+  }
+
   return (
     <>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
         {data && data.map((copyright: CopyrightType) => (
-          <motion.div
-            key={copyright.id}
-            initial={{ opacity: 0, scale: 0.5 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{
-              duration: 0.8,
-              delay: 0.5,
-              ease: [0, 0.71, 0.2, 1.01]
-            }}
-          >
-            <Card shadow="sm" isFooterBlurred className="h-64">
+          <Card key={copyright.id} shadow="sm" isFooterBlurred className="h-64 show-up-motion">
               <CardHeader className="flex gap-3">
                 <p>{copyright.name}</p>
                 <Popover placement="top" shadow="sm">
@@ -136,6 +156,23 @@ export default function CopyrightList(props : Readonly<HandleProps>) {
                       onValueChange={(isSelected: boolean) => updateCopyrightShow(copyright.id, isSelected ? 0 : 1)}
                     />
                   }
+                  {updateCopyrightDefaultLoading && updateCopyrightDefaultId === copyright.id ? <Spinner size="sm" /> :
+                    <Switch
+                      defaultSelected
+                      size="sm"
+                      color="success"
+                      isSelected={copyright.default === 0}
+                      isDisabled={updateCopyrightDefaultLoading}
+                      thumbIcon={({ isSelected }) =>
+                        isSelected ? (
+                          <BadgeCheck size={20} />
+                        ) : (
+                          <BadgeX size={20} />
+                        )
+                      }
+                      onValueChange={(isSelected: boolean) => updateCopyrightDefault(copyright.id, isSelected ? 0 : 1)}
+                    />
+                  }
                 </div>
                 <div className="space-x-1">
                   <Button
@@ -163,7 +200,6 @@ export default function CopyrightList(props : Readonly<HandleProps>) {
                 </div>
               </CardFooter>
             </Card>
-          </motion.div>
         ))}
       </div>
       <Modal

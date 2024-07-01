@@ -22,7 +22,6 @@ import {
   Pagination,
   Select,
   SelectItem,
-  Image,
   Switch,
   Badge,
   Spinner,
@@ -38,9 +37,9 @@ import ImageEditSheet from '~/components/admin/list/ImageEditSheet'
 import ImageView from '~/components/admin/list/ImageView'
 import { fetcher } from '~/utils/fetcher'
 import useSWR from 'swr'
-import { motion } from 'framer-motion'
 import ImageHelpSheet from '~/components/admin/list/ImageHelpSheet'
 import { Select as AntdSelect } from 'antd'
+import ListImage from '~/components/admin/list/ListImage'
 
 export default function ListProps(props : Readonly<ImageServerHandleProps>) {
   const [pageNum, setPageNum] = useState(1)
@@ -171,9 +170,6 @@ export default function ListProps(props : Readonly<ImageServerHandleProps>) {
               <SelectItem key="all" value="all">
                 全部
               </SelectItem>
-              <SelectItem key="/" value="/">
-                首页
-              </SelectItem>
               {tags?.map((tag: TagType) => (
                 <SelectItem key={tag.tag_value} value={tag.tag_value}>
                   {tag.name}
@@ -210,17 +206,7 @@ export default function ListProps(props : Readonly<ImageServerHandleProps>) {
       </Card>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
         {Array.isArray(data) && data?.map((image: ImageType) => (
-          <motion.div
-            key={image.id}
-            initial={{ opacity: 0, scale: 0.5 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{
-              duration: 0.8,
-              delay: 0.5,
-              ease: [0, 0.71, 0.2, 1.01]
-            }}
-          >
-            <Card shadow="sm" className="h-72">
+          <Card key={image.id} shadow="sm" className="h-72 show-up-motion">
               <CardHeader className="justify-between space-x-1 select-none">
                 {
                   image.tag_values.includes(',') ?
@@ -264,15 +250,8 @@ export default function ListProps(props : Readonly<ImageServerHandleProps>) {
                   </Button>
                 </div>
               </CardHeader>
-              <CardBody>
-                <Image
-                  className="aspect-video"
-                  isBlurred
-                  isZoomed
-                  height={140}
-                  src={image.preview_url || image.url}
-                  alt={image.detail}
-                />
+              <CardBody className="scrollbar-hide">
+                <ListImage image={image} />
               </CardBody>
               <CardFooter
                 className="flex space-x-1 select-none before:bg-white/10 border-white/20 border-1 overflow-hidden py-1 absolute before:rounded-xl rounded-large bottom-1 w-[calc(100%_-_8px)] shadow-small ml-1 z-10">
@@ -358,8 +337,7 @@ export default function ListProps(props : Readonly<ImageServerHandleProps>) {
                   </Dropdown>
                 </div>
               </CardFooter>
-            </Card>
-          </motion.div>
+          </Card>
         ))}
       </div>
       <Pagination

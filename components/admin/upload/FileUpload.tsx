@@ -63,7 +63,7 @@ export default function FileUpload() {
       exifObj.make = tags?.Make?.description
       exifObj.model = tags?.Model?.description
       exifObj.bits = tags?.['Bits Per Sample']?.description
-      exifObj.data_time = tags?.DateTime?.description
+      exifObj.data_time = tags?.DateTimeOriginal?.description !== '' ? tags?.DateTimeOriginal?.description : tags?.DateTime?.description;
       exifObj.exposure_time = tags?.ExposureTime?.description
       exifObj.f_number = tags?.FNumber?.description
       exifObj.exposure_program = tags?.ExposureProgram?.description
@@ -253,7 +253,7 @@ export default function FileUpload() {
         exifObj.make = tags?.Make?.description
         exifObj.model = tags?.Model?.description
         exifObj.bits = tags?.['Bits Per Sample']?.description
-        exifObj.data_time = tags?.DateTime?.description
+        exifObj.data_time = tags?.DateTimeOriginal?.description !== '' ? tags?.DateTimeOriginal?.description : tags?.DateTime?.description;
         exifObj.exposure_time = tags?.ExposureTime?.description
         exifObj.f_number = tags?.FNumber?.description
         exifObj.exposure_program = tags?.ExposureProgram?.description
@@ -323,7 +323,7 @@ export default function FileUpload() {
 
   async function uploadPreviewImage(option: any, type: string, url: string) {
     new Compressor(option.file, {
-      quality: 0.3,
+      quality: 0.2,
       checkOrientation: false,
       mimeType: 'image/webp',
       async success(compressedFile) {
@@ -516,9 +516,6 @@ export default function FileUpload() {
                 setTag(updatedSet)
               }}
             >
-              <SelectItem key="/" value="/">
-                首页
-              </SelectItem>
               {data?.map((tag: TagType) => (
                 <SelectItem key={tag.tag_value} value={tag.tag_value}>
                   {tag.name}
