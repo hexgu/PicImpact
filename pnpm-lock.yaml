@@ -18,8 +18,8 @@ importers:
         specifier: ^3.627.0
         version: 3.627.0
       '@douyinfe/semi-ui':
-        specifier: ^2.63.1
-        version: 2.63.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: ^2.64.0
+        version: 2.64.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@nextui-org/react':
         specifier: ^2.4.6
         version: 2.4.6(@types/react@18.3.3)(framer-motion@11.3.24(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(tailwindcss@3.4.9)
@@ -429,33 +429,33 @@ packages:
     peerDependencies:
       react: '>=16.8.0'
 
-  '@douyinfe/semi-animation-react@2.63.1':
-    resolution: {integrity: sha512-mZcT+Kxtrgm807AwWqD/TkGDdVExnH6Ebs0zvZCOUsIr3ZzBQ354earU81SSpnxQO4PcV0tGy4tIXnL/QiI0Xg==}
+  '@douyinfe/semi-animation-react@2.64.0':
+    resolution: {integrity: sha512-Jl7PP6WGSqvi4/+IDTVtjlTmeVF+8GC0AEMaEdVa5vxxcRHL9uQHpfA+zKHW6+oyeeLnCA7pUZtPdZTCaF+Q+g==}
 
-  '@douyinfe/semi-animation-styled@2.63.1':
-    resolution: {integrity: sha512-KZwhx5lDfZf30hYFVwAHI/cRDyJy4PQRppHiFdpvFYC2RdHQiRc8WOCFuqIHrdUWEtln9ulxE12DP6rWZNQ10A==}
+  '@douyinfe/semi-animation-styled@2.64.0':
+    resolution: {integrity: sha512-K7c9IkmJCkLeu9EcCOzOMYbVBLM4uoSANgoIkNm2fQcfqX42gRUOLdlxkK5aKFVTsJO9fTaTeZeVSWyTRni+MQ==}
 
-  '@douyinfe/semi-animation@2.63.1':
-    resolution: {integrity: sha512-z1mR2gUmHFUYv6giuHoqPXwx7NHS5ClQYow7h1xSLxqJ79Y8rCWVGUbDNQPG+5sBT50hf8HqvL4JqF+/UyrXxg==}
+  '@douyinfe/semi-animation@2.64.0':
+    resolution: {integrity: sha512-rqGd+cV+zmi6DpuEuMx5mgU1dO00Pvz2PW4zE0PUeMUHod59vThcE7yCx21QyMzR1hPAUMTxSaTKYRhyIVMA5Q==}
 
-  '@douyinfe/semi-foundation@2.63.1':
-    resolution: {integrity: sha512-bDkVRv5XjC07tjSqbsNrODyuqo5CduILK8euaksVXVpYcc9pZHLNBIuU77cBReknRJdXLpAn3mwWmNXlque+lg==}
+  '@douyinfe/semi-foundation@2.64.0':
+    resolution: {integrity: sha512-443spMoIWFN7M9FcbYUcnTk0GLUvg31bGdKMAldtfcpYKqLiVbDO0lZ43XddPOeuYlrTEsyeSwuzgyZoi0csKg==}
 
-  '@douyinfe/semi-icons@2.63.1':
-    resolution: {integrity: sha512-wU4NKQg/5eAIKsgqX7gAtZ/bX3DbY69HwnE0jw/oCgnrI9zZqvZ1nLkFmGa4hwDqqqgxW8w1cpy4ERFT3NGhKw==}
+  '@douyinfe/semi-icons@2.64.0':
+    resolution: {integrity: sha512-BtnfPV7ZaSUWq6taxfApG9K3+RfpuEyojUEnpc233JOI+sNlB1ymSpo9aPgL+5co86752t9YpFV4Q7cGOdEMOQ==}
     peerDependencies:
       react: ^16.8.0 || ^17.0.0 || ^18.0.0
 
-  '@douyinfe/semi-illustrations@2.63.1':
-    resolution: {integrity: sha512-OlcDfhr8gzZTFMP5oRwA2/Ll261vn784HHbTRFnFUETWH6fWjNcRZll2vZjNDdDkKydUfn9IdvcqM0GZ/+PYgA==}
+  '@douyinfe/semi-illustrations@2.64.0':
+    resolution: {integrity: sha512-2M6wKfger8RJi1gjrSvDZY8PvJDzO0k1UvMFR+mkBICbD9r0oa5vYGRh9Mzp050Qew8aAo21MQrloXsYYHfJQg==}
     peerDependencies:
       react: ^16.8.0 || ^17.0.0 || ^18.0.0
 
   '@douyinfe/semi-theme-default@2.61.0':
     resolution: {integrity: sha512-obn/DOw4vZyKFAlWvZxHTpBLAK9FO9kygTSm2GROgvi+UDB2PPU6l20cuUCsdGUNWJRSqYlTTVZ1tNYIyFZ5Sg==}
 
-  '@douyinfe/semi-ui@2.63.1':
-    resolution: {integrity: sha512-kr8aRaA3oIIlxQa7mPyBSiEPmP+9beKJOD700MHNDqKP0YuVfy4U9YgSvlBz3x+ntGmpuJqBD2VQtssbWFNYNQ==}
+  '@douyinfe/semi-ui@2.64.0':
+    resolution: {integrity: sha512-0aXoTXB48c65qUeYORpLp9oa8RxTXN0AEk6s3mDg4tyA6LjOJcN2uMoquJ3be/d+cHEUbdZlcS1jQPSEtF5Bbw==}
     peerDependencies:
       react: '>=16.0.0'
       react-dom: '>=16.0.0'
@@ -5277,21 +5277,21 @@ snapshots:
       react: 18.3.1
       tslib: 2.6.2
 
-  '@douyinfe/semi-animation-react@2.63.1':
+  '@douyinfe/semi-animation-react@2.64.0':
     dependencies:
-      '@douyinfe/semi-animation': 2.63.1
-      '@douyinfe/semi-animation-styled': 2.63.1
+      '@douyinfe/semi-animation': 2.64.0
+      '@douyinfe/semi-animation-styled': 2.64.0
       classnames: 2.5.1
 
-  '@douyinfe/semi-animation-styled@2.63.1': {}
+  '@douyinfe/semi-animation-styled@2.64.0': {}
 
-  '@douyinfe/semi-animation@2.63.1':
+  '@douyinfe/semi-animation@2.64.0':
     dependencies:
       bezier-easing: 2.1.0
 
-  '@douyinfe/semi-foundation@2.63.1':
+  '@douyinfe/semi-foundation@2.64.0':
     dependencies:
-      '@douyinfe/semi-animation': 2.63.1
+      '@douyinfe/semi-animation': 2.64.0
       '@mdx-js/mdx': 3.0.1
       async-validator: 3.5.2
       classnames: 2.5.1
@@ -5307,27 +5307,27 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@douyinfe/semi-icons@2.63.1(react@18.3.1)':
+  '@douyinfe/semi-icons@2.64.0(react@18.3.1)':
     dependencies:
       classnames: 2.5.1
       react: 18.3.1
 
-  '@douyinfe/semi-illustrations@2.63.1(react@18.3.1)':
+  '@douyinfe/semi-illustrations@2.64.0(react@18.3.1)':
     dependencies:
       react: 18.3.1
 
   '@douyinfe/semi-theme-default@2.61.0': {}
 
-  '@douyinfe/semi-ui@2.63.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
+  '@douyinfe/semi-ui@2.64.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
     dependencies:
       '@dnd-kit/core': 6.1.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@dnd-kit/sortable': 7.0.2(@dnd-kit/core@6.1.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)
       '@dnd-kit/utilities': 3.2.2(react@18.3.1)
-      '@douyinfe/semi-animation': 2.63.1
-      '@douyinfe/semi-animation-react': 2.63.1
-      '@douyinfe/semi-foundation': 2.63.1
-      '@douyinfe/semi-icons': 2.63.1(react@18.3.1)
-      '@douyinfe/semi-illustrations': 2.63.1(react@18.3.1)
+      '@douyinfe/semi-animation': 2.64.0
+      '@douyinfe/semi-animation-react': 2.64.0
+      '@douyinfe/semi-foundation': 2.64.0
+      '@douyinfe/semi-icons': 2.64.0(react@18.3.1)
+      '@douyinfe/semi-illustrations': 2.64.0(react@18.3.1)
       '@douyinfe/semi-theme-default': 2.61.0
       async-validator: 3.5.2
       classnames: 2.5.1
