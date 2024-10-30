@@ -110,105 +110,103 @@ export default function Authenticator() {
 
   return (
     <div className="flex flex-col space-y-2 h-full flex-1">
-      <Card shadow="sm">
-        {
-          isValidating ? <p className="m-2">同步状态中...</p>
-            : data?.data?.auth_enable === 'true' ?
-              <CardBody className="space-y-2">
-                <Chip color="success">双因素验证已启用</Chip>
-                <Button className="w-36" color="danger" onClick={() => setIsOpen(true)}>
-                  移除双因素验证
+      {
+        isValidating ? <p className="m-2">同步状态中...</p>
+          : data?.data?.auth_enable === 'true' ?
+            <div className="space-y-2">
+              <Chip color="success">双因素验证已启用</Chip>
+              <Button className="w-36" color="danger" onClick={() => setIsOpen(true)}>
+                移除双因素验证
+              </Button>
+            </div>
+            : <div className="space-y-2">
+              <h4 className="text-medium font-medium">第一步</h4>
+              <p className="text-small text-default-400">下载任意两步验证手机应用：</p>
+              <Link
+                isExternal
+                href="https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2"
+                showAnchorIcon
+              >
+                Google Authenticator
+              </Link>
+              <Link
+                isExternal
+                href="https://www.microsoft.com/en-us/security/mobile-authenticator-app"
+                showAnchorIcon
+              >
+                Microsoft Authenticator
+              </Link>
+              <Link
+                isExternal
+                href="https://support.1password.com/one-time-passwords/"
+                showAnchorIcon
+              >
+                1Password
+              </Link>
+              <h4 className="text-medium font-medium">第二步</h4>
+              <p className="text-small text-default-400">使用手机应用扫描二维码：</p>
+              {
+                uri &&
+                <SVG
+                  text={uri}
+                  options={{
+                    margin: 2,
+                    width: 180,
+                    color: {
+                      dark: '#010599FF',
+                      light: '#FFBF60FF',
+                    },
+                  }}
+                />
+              }
+              <p className="text-small text-default-400">或者输入秘钥：</p>
+              <Code className="w-full sm:w-64" color="success">{secret || 'N&A'}</Code>
+              <h4 className="text-medium font-medium">第三步</h4>
+              <p className="text-small text-default-400">输入手机应用上的6位数字：</p>
+              <InputOTP
+                maxLength={6}
+                value={password}
+                onChange={(value: string) => setPassword(value)}
+                onComplete={(value: string) => setPassword(value)}
+              >
+                <InputOTPGroup>
+                  <InputOTPSlot index={0} />
+                  <InputOTPSlot index={1} />
+                  <InputOTPSlot index={2} />
+                </InputOTPGroup>
+                <InputOTPSeparator />
+                <InputOTPGroup>
+                  <InputOTPSlot index={3} />
+                  <InputOTPSlot index={4} />
+                  <InputOTPSlot index={5} />
+                </InputOTPGroup>
+              </InputOTP>
+              <div className="flex items-center justify-center space-x-2 w-full sm:w-64">
+                <Button
+                  onClick={async () => {
+                    setPassword('')
+                    setUri('')
+                    setSecret('')
+                    await getQRCode()
+                  }}
+                  className="w-full sm:w-64"
+                  color="primary"
+                  variant="shadow"
+                >
+                  重新获取
                 </Button>
-              </CardBody>
-              : <CardBody className="space-y-2">
-                <h4 className="text-medium font-medium">第一步</h4>
-                <p className="text-small text-default-400">下载任意两步验证手机应用：</p>
-                <Link
-                  isExternal
-                  href="https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2"
-                  showAnchorIcon
+                <Button
+                  onClick={() => saveAuthTemplateToken()}
+                  isDisabled={password.length !== 6}
+                  className="w-full sm:w-64"
+                  color="primary"
+                  variant="shadow"
                 >
-                  Google Authenticator
-                </Link>
-                <Link
-                  isExternal
-                  href="https://www.microsoft.com/en-us/security/mobile-authenticator-app"
-                  showAnchorIcon
-                >
-                  Microsoft Authenticator
-                </Link>
-                <Link
-                  isExternal
-                  href="https://support.1password.com/one-time-passwords/"
-                  showAnchorIcon
-                >
-                  1Password
-                </Link>
-                <h4 className="text-medium font-medium">第二步</h4>
-                <p className="text-small text-default-400">使用手机应用扫描二维码：</p>
-                {
-                  uri &&
-                  <SVG
-                    text={uri}
-                    options={{
-                      margin: 2,
-                      width: 180,
-                      color: {
-                        dark: '#010599FF',
-                        light: '#FFBF60FF',
-                      },
-                    }}
-                  />
-                }
-                <p className="text-small text-default-400">或者输入秘钥：</p>
-                <Code className="w-full sm:w-64" color="success">{secret || 'N&A'}</Code>
-                <h4 className="text-medium font-medium">第三步</h4>
-                <p className="text-small text-default-400">输入手机应用上的6位数字：</p>
-                <InputOTP
-                  maxLength={6}
-                  value={password}
-                  onChange={(value: string) => setPassword(value)}
-                  onComplete={(value: string) => setPassword(value)}
-                >
-                  <InputOTPGroup>
-                    <InputOTPSlot index={0} />
-                    <InputOTPSlot index={1} />
-                    <InputOTPSlot index={2} />
-                  </InputOTPGroup>
-                  <InputOTPSeparator />
-                  <InputOTPGroup>
-                    <InputOTPSlot index={3} />
-                    <InputOTPSlot index={4} />
-                    <InputOTPSlot index={5} />
-                  </InputOTPGroup>
-                </InputOTP>
-                <div className="flex items-center justify-center space-x-2 w-full sm:w-64">
-                  <Button
-                    onClick={async () => {
-                      setPassword('')
-                      setUri('')
-                      setSecret('')
-                      await getQRCode()
-                    }}
-                    className="w-full sm:w-64"
-                    color="primary"
-                    variant="shadow"
-                  >
-                    重新获取
-                  </Button>
-                  <Button
-                    onClick={() => saveAuthTemplateToken()}
-                    isDisabled={password.length !== 6}
-                    className="w-full sm:w-64"
-                    color="primary"
-                    variant="shadow"
-                  >
-                    完成设置
-                  </Button>
-                </div>
-              </CardBody>
-        }
-      </Card>
+                  完成设置
+                </Button>
+              </div>
+            </div>
+      }
       <Modal
         isOpen={isOpen}
         hideCloseButton
