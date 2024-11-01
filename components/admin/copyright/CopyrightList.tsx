@@ -85,8 +85,8 @@ export default function CopyrightList(props : Readonly<HandleProps>) {
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
       {data && data.map((copyright: CopyrightType) => (
-        <Card key={copyright.id} className="flex flex-col h-64 show-up-motion items-center">
-          <div className="flex justify-start w-full p-2 space-x-2">
+        <Card key={copyright.id} className="flex flex-col h-72 show-up-motion items-center">
+          <div className="flex h-12 justify-start w-full p-2 space-x-2">
             <p>{copyright.name}</p>
             <Popover>
               <PopoverTrigger className="cursor-pointer select-none inline-flex items-center justify-center rounded-full bg-emerald-100 px-2.5 py-0.5 text-emerald-700">
@@ -100,8 +100,8 @@ export default function CopyrightList(props : Readonly<HandleProps>) {
               </PopoverContent>
             </Popover>
           </div>
-          <div className="flex justify-start w-full p-2 flex-1">{copyright.detail || 'N&A'}</div>
-          <CardFooter className="flex p-2 mb-1 space-x-1 select-none before:bg-white/10 border-white/20 border-1 overflow-hidden py-1 before:rounded-xl rounded-large w-[calc(100%_-_8px)] shadow-small z-10">
+          <div className="flex justify-start w-full p-2 h-48">{copyright.detail || 'N&A'}</div>
+          <CardFooter className="flex h-12 p-2 mb-1 space-x-1 select-none before:bg-white/10 border-white/20 border-1 overflow-hidden py-1 before:rounded-xl rounded-large w-[calc(100%_-_8px)] shadow-small z-10">
             <div className="flex flex-1 space-x-1 items-center w-full">
               {
                 updateCopyrightLoading && updateCopyrightId === copyright.id ?

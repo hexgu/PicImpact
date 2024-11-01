@@ -5,16 +5,11 @@ import { DataProps, ImageServerHandleProps, ImageType, AlbumType } from '~/types
 import { useSWRInfiniteServerHook } from '~/hooks/useSWRInfiniteServerHook'
 import { useSWRPageTotalServerHook } from '~/hooks/useSWRPageTotalServerHook'
 import {
-  Modal,
-  ModalContent,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
   Pagination,
   Select,
   SelectItem
 } from '@nextui-org/react'
-import { ArrowDown10, Trash, ScanSearch, CircleHelp, CircleEllipsis } from 'lucide-react'
+import { ArrowDown10, Trash, ScanSearch, CircleHelp, Replace, Pencil } from 'lucide-react'
 import { toast } from 'sonner'
 import { useButtonStore } from '~/app/providers/button-store-Providers'
 import ImageEditSheet from '~/components/admin/list/ImageEditSheet'
@@ -35,11 +30,16 @@ import {
   PopoverTrigger,
 } from '~/components/ui/popover'
 import {
-  DropdownMenu,
-  DropdownMenuItem,
-  DropdownMenuContent,
-  DropdownMenuTrigger,
-} from '~/components/ui/dropdown-menu'
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from '~/components/ui/alert-dialog'
 
 export default function ListProps(props : Readonly<ImageServerHandleProps>) {
   const [pageNum, setPageNum] = useState(1)
@@ -282,38 +282,102 @@ export default function ListProps(props : Readonly<ImageServerHandleProps>) {
                 </Popover>
               </div>
               <div className="space-x-1">
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
+                <AlertDialog>
+                  <AlertDialogTrigger asChild>
                     <Button
                       variant="outline"
                       size="icon"
-                      aria-label="更多操作"
-                    >
-                      <CircleEllipsis size={20} />
-                    </Button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent className="w-56">
-                    <DropdownMenuItem
                       onClick={() => {
                         setImage(image)
                         setImageDefaultTag({ label: image.album_names, value: image.album_values })
-                        setIsTypeOpen(true)
                       }}
-                    >绑定相册</DropdownMenuItem>
-                    <DropdownMenuItem
-                      onClick={() => {
-                        setImageEditData(image)
-                        setImageEdit(true)
+                      aria-label="绑定相册"
+                    >
+                      <Replace size={20} />
+                    </Button>
+                  </AlertDialogTrigger>
+                  <AlertDialogContent>
+                    <AlertDialogHeader>
+                      <AlertDialogTitle>相册绑定</AlertDialogTitle>
+                    </AlertDialogHeader>
+                    <AntdSelect
+                      defaultValue={imageDefaultTag}
+                      loading={isLoading}
+                      options={tags}
+                      fieldNames={fieldNames}
+                      onChange={(value) => {
+                        // @ts-ignore
+                        setImageTag(value)
                       }}
-                    >编辑图片</DropdownMenuItem>
-                    <DropdownMenuItem
+                    />
+                    <AlertDialogFooter>
+                      <AlertDialogCancel onClick={() => {
+                        setIsOpen(false)
+                        setImage({} as ImageType)
+                      }}>Cancel</AlertDialogCancel>
+                      <AlertDialogAction>
+                        <Button
+                          disabled={updateImageTagLoading}
+                          onClick={() => updateImageTag()}
+                          aria-label="更新"
+                        >
+                          {deleteLoading && <ReloadIcon className="mr-2 h-4 w-4 animate-spin"/>}
+                          更新
+                        </Button>
+                      </AlertDialogAction>
+                    </AlertDialogFooter>
+                  </AlertDialogContent>
+                </AlertDialog>
+                <Button
+                  variant="outline"
+                  size="icon"
+                  onClick={() => {
+                    setImageEditData(image)
+                    setImageEdit(true)
+                  }}
+                  aria-label="编辑图片"
+                >
+                  <Pencil size={20} />
+                </Button>
+                <AlertDialog>
+                  <AlertDialogTrigger asChild>
+                    <Button
+                      variant="outline"
+                      size="icon"
                       onClick={() => {
                         setImage(image)
-                        setIsOpen(true)
                       }}
-                    >删除图片</DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
+                      aria-label="删除图片"
+                    >
+                      <Trash size={20}/>
+                    </Button>
+                  </AlertDialogTrigger>
+                  <AlertDialogContent>
+                    <AlertDialogHeader>
+                      <AlertDialogTitle>确定要删掉？</AlertDialogTitle>
+                      <AlertDialogDescription>
+                        <p>图片 ID：{image.id}</p>
+                        <p>图片介绍：{image.detail || '没有介绍'}</p>
+                      </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                      <AlertDialogCancel onClick={() => {
+                        setIsOpen(false)
+                        setImage({} as ImageType)
+                      }}>Cancel</AlertDialogCancel>
+                      <AlertDialogAction>
+                        <Button
+                          disabled={deleteLoading}
+                          onClick={() => deleteImage()}
+                          aria-label="确认删除"
+                        >
+                          {deleteLoading && <ReloadIcon className="mr-2 h-4 w-4 animate-spin"/>}
+                          删除
+                        </Button>
+                      </AlertDialogAction>
+                    </AlertDialogFooter>
+                  </AlertDialogContent>
+                </AlertDialog>
               </div>
             </CardFooter>
           </Card>
@@ -331,72 +395,6 @@ export default function ListProps(props : Readonly<ImageServerHandleProps>) {
           await mutate()
         }}
       />
-      <Modal
-        isOpen={isOpen}
-        hideCloseButton
-        placement="center"
-      >
-        <ModalContent>
-          <ModalHeader className="flex flex-col gap-1">确定要删掉？</ModalHeader>
-          <ModalBody>
-            <p>图片 ID：{image.id}</p>
-            <p>图片介绍：{image.detail || '没有介绍'}</p>
-          </ModalBody>
-          <ModalFooter>
-            <Button
-              color="primary"
-              variant="flat"
-              onClick={() => {
-                setImage({} as ImageType)
-                setIsOpen(false)
-              }}
-              aria-label="不删除"
-            >
-              算了
-            </Button>
-            <Button
-              color="danger"
-              isLoading={deleteLoading}
-              onClick={() => deleteImage()}
-              aria-label="确认删除"
-            >
-              是的
-            </Button>
-          </ModalFooter>
-        </ModalContent>
-      </Modal>
-      <Modal
-        isOpen={isTypeOpen}
-        isDismissable={false}
-        placement="center"
-        onClose={() => setIsTypeOpen(false)}
-      >
-        <ModalContent>
-          <ModalHeader className="flex flex-col gap-1">相册绑定</ModalHeader>
-          <ModalBody>
-            <AntdSelect
-              defaultValue={imageDefaultTag}
-              loading={isLoading}
-              options={tags}
-              fieldNames={fieldNames}
-              onChange={(value) => {
-                // @ts-ignore
-                setImageTag(value)
-              }}
-            />
-          </ModalBody>
-          <ModalFooter>
-            <Button
-              color="primary"
-              variant="bordered"
-              isLoading={updateImageTagLoading}
-              onClick={() => updateImageTag()}
-            >
-              更新
-            </Button>
-          </ModalFooter>
-        </ModalContent>
-      </Modal>
       <ImageEditSheet {...{...props, pageNum, tag}} />
       <ImageView />
       <ImageHelpSheet />

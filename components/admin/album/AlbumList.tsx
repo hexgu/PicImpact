@@ -87,8 +87,8 @@ export default function AlbumList(props : Readonly<HandleProps>) {
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
       <DefaultAlbum/>
       {data && data.map((album: AlbumType) => (
-        <Card key={album.id} className="flex flex-col h-64 show-up-motion items-center">
-          <div className="flex justify-start w-full p-2 space-x-2">
+        <Card key={album.id} className="flex flex-col h-72 show-up-motion items-center">
+          <div className="flex h-12 justify-start w-full p-2 space-x-2">
             <p>{album.name}</p>
             <Popover>
               <PopoverTrigger
@@ -103,10 +103,10 @@ export default function AlbumList(props : Readonly<HandleProps>) {
               </PopoverContent>
             </Popover>
           </div>
-          <div className="flex justify-start w-full p-2 flex-1">
+          <div className="flex justify-start w-full p-2 h-48">
             {album.detail || '没有介绍'}
           </div>
-          <CardFooter className="flex p-2 mb-1 space-x-1 select-none before:bg-white/10 border-white/20 border-1 overflow-hidden py-1 before:rounded-xl rounded-large w-[calc(100%_-_8px)] shadow-small z-10">
+          <CardFooter className="flex h-12 p-2 mb-1 space-x-1 select-none before:bg-white/10 border-white/20 border-1 overflow-hidden py-1 before:rounded-xl rounded-large w-[calc(100%_-_8px)] shadow-small z-10">
             <div className="flex flex-1 space-x-1 items-center">
               {
                 updateAlbumLoading && updateAlbumId === album.id ? <ReloadIcon className="mr-2 h-4 w-4 animate-spin"/> :
