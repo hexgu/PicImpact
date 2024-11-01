@@ -10,7 +10,7 @@ import { useSWRHydrated } from '~/hooks/useSWRHydrated'
 
 export default function AlbumAddSheet(props : Readonly<HandleProps>) {
   const { isLoading, mutate, error } = useSWRHydrated(props)
-  const { tagAdd, setTagAdd } = useButtonStore(
+  const { albumAdd, setAlbumAdd } = useButtonStore(
     (state) => state,
   )
   const [data, setData] = useState({} as AlbumType)
@@ -27,7 +27,7 @@ export default function AlbumAddSheet(props : Readonly<HandleProps>) {
     }
     try {
       setLoading(true)
-      const res = await fetch('/api/v1/tags/add', {
+      const res = await fetch('/api/v1/albums/add', {
         headers: {
           'Content-Type': 'application/json',
         },
@@ -36,7 +36,7 @@ export default function AlbumAddSheet(props : Readonly<HandleProps>) {
       }).then(response => response.json())
       if (res.code === 200) {
         toast.success('添加成功！')
-        setTagAdd(false)
+        setAlbumAdd(false)
         setData({} as AlbumType)
         await mutate()
       } else {
@@ -52,8 +52,8 @@ export default function AlbumAddSheet(props : Readonly<HandleProps>) {
   return (
     <Sheet
       defaultOpen={false}
-      open={tagAdd}
-      onOpenChange={() => setTagAdd(!tagAdd)}
+      open={albumAdd}
+      onOpenChange={() => setAlbumAdd(!albumAdd)}
       modal={false}
     >
       <SheetContent side="left" className="overflow-y-auto scrollbar-hide" onInteractOutside={(event: any) => event.preventDefault()}>

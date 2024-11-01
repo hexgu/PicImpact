@@ -99,42 +99,78 @@ export default function PassWord() {
           name="onePassword"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>旧密码</FormLabel>
               <FormControl>
-                <Input className="w-full sm:w-64" placeholder="请输入旧密码。" {...field} />
+                <label
+                  htmlFor="onePassword"
+                  className="w-full sm:w-64 block overflow-hidden rounded-md border border-gray-200 px-3 py-2 shadow-sm focus-within:border-blue-600 focus-within:ring-1 focus-within:ring-blue-600"
+                >
+                  <span className="text-xs font-medium text-gray-700"> 旧密码 </span>
+
+                  <input
+                    type="text"
+                    id="onePassword"
+                    placeholder="请输入旧密码。"
+                    {...field}
+                    className="mt-1 w-full border-none p-0 focus:border-transparent focus:outline-none focus:ring-0 sm:text-sm"
+                  />
+                </label>
               </FormControl>
-              <FormMessage />
+              <FormMessage/>
             </FormItem>
           )}
         />
         <FormField
           control={form.control}
           name="twoPassword"
-          render={({ field }) => (
+          render={({field}) => (
             <FormItem>
-              <FormLabel>新密码</FormLabel>
               <FormControl>
-                <Input className="w-full sm:w-64" placeholder="请输入新密码。" {...field} />
+                <label
+                  htmlFor="twoPassword"
+                  className="w-full sm:w-64 block overflow-hidden rounded-md border border-gray-200 px-3 py-2 shadow-sm focus-within:border-blue-600 focus-within:ring-1 focus-within:ring-blue-600"
+                >
+                  <span className="text-xs font-medium text-gray-700"> 新密码 </span>
+
+                  <input
+                    type="text"
+                    id="twoPassword"
+                    placeholder="请输入新密码。"
+                    {...field}
+                    className="mt-1 w-full border-none p-0 focus:border-transparent focus:outline-none focus:ring-0 sm:text-sm"
+                  />
+                </label>
               </FormControl>
-              <FormMessage />
+              <FormMessage/>
             </FormItem>
           )}
         />
         <FormField
           control={form.control}
           name="threePassword"
-          render={({ field }) => (
+          render={({field}) => (
             <FormItem>
-              <FormLabel>确认密码</FormLabel>
               <FormControl>
-                <Input className="w-full sm:w-64" placeholder="请输入确认密码。" {...field} />
+                <label
+                  htmlFor="threePassword"
+                  className="w-full sm:w-64 block overflow-hidden rounded-md border border-gray-200 px-3 py-2 shadow-sm focus-within:border-blue-600 focus-within:ring-1 focus-within:ring-blue-600"
+                >
+                  <span className="text-xs font-medium text-gray-700"> 确认密码 </span>
+
+                  <input
+                    type="text"
+                    id="threePassword"
+                    placeholder="请输入确认密码。"
+                    {...field}
+                    className="mt-1 w-full border-none p-0 focus:border-transparent focus:outline-none focus:ring-0 sm:text-sm"
+                  />
+                </label>
               </FormControl>
-              <FormMessage />
+              <FormMessage/>
             </FormItem>
           )}
         />
         <Button className="cursor-pointer" type="submit" disabled={loading}>
-          {loading && <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />}
+          {loading && <ReloadIcon className="mr-2 h-4 w-4 animate-spin"/>}
           提交
         </Button>
       </form>

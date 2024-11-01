@@ -23,7 +23,7 @@ export default function HeaderLink(props: Readonly<DataProps>) {
       </Button>
       {Array.isArray(props.data) && props.data?.map((album: AlbumType) => (
         <Button
-          key={a.id}
+          key={album.id}
           color="primary"
           radius="none"
           variant="light"

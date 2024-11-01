@@ -44,7 +44,7 @@ export default function FileUpload() {
     (state) => state,
   )
 
-  const { data, isLoading } = useSWR('/api/v1/tags/get', fetcher)
+  const { data, isLoading } = useSWR('/api/v1/albums/get', fetcher)
 
   async function loadExif(file: any) {
     try {

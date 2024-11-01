@@ -378,20 +378,6 @@ export async function updateCopyrightShow(id: string, show: number) {
   return resultRow
 }
 
-export async function updateCopyrightDefault(id: string, defaultValue: number) {
-  // @ts-ignore
-  const resultRow = await db.copyright.update({
-    where: {
-      id: id
-    },
-    data: {
-      default: defaultValue,
-      updatedAt: new Date()
-    }
-  })
-  return resultRow
-}
-
 export async function updateCustomTitle(title: string) {
   const resultRow = await db.configs.update({
     where: {
