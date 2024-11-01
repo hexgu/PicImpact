@@ -1,12 +1,15 @@
 'use client'
 
 import { Config } from '~/types'
-import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from '~/components/ui/sheet'
-import { Button, Input } from '@nextui-org/react'
+import { Sheet, SheetContent, SheetHeader, SheetTitle } from '~/components/ui/sheet'
 import { useButtonStore } from '~/app/providers/button-store-Providers'
-import { useState } from 'react'
+import React, { useState } from 'react'
 import { toast } from 'sonner'
 import { useSWRConfig } from 'swr'
+import { Input } from '~/components/ui/input'
+import { ReloadIcon } from '@radix-ui/react-icons'
+import { Button } from '~/components/ui/button'
+import { Label } from '~/components/ui/label'
 
 export default function S3EditSheet() {
   const [loading, setLoading] = useState(false)
@@ -27,12 +30,12 @@ export default function S3EditSheet() {
       }).then(res => res.json())
       toast.success('更新成功！')
       mutate('/api/v1/settings/r2-info')
+      setR2Edit(false)
+      setR2EditData([] as Config[])
     } catch (e) {
       toast.error('更新失败！')
     } finally {
       setLoading(false)
-      setR2Edit(false)
-      setR2EditData([] as Config[])
     }
   }
 
@@ -51,40 +54,33 @@ export default function S3EditSheet() {
       <SheetContent side="left" className="overflow-y-auto scrollbar-hide" onInteractOutside={(event: any) => event.preventDefault()}>
         <SheetHeader>
           <SheetTitle>编辑 Cloudflare R2</SheetTitle>
-          <SheetDescription className="space-y-2">
-            {
-              r2Data?.map((config: Config) => (
+        </SheetHeader>
+        <div className="flex flex-col space-y-2">
+          {
+            r2Data?.map((config: Config) => (
+              <div className="grid w-full max-w-sm items-center gap-1.5" key={config.id}>
+                <Label htmlFor="text">{config.config_key}</Label>
                 <Input
-                  isRequired
-                  key={config.id}
-                  value={config.config_value}
-                  onValueChange={(value) => setR2EditData(
+                  className="w-full sm:w-64"
+                  value={config.config_value || ''}
+                  placeholder={`输入${config.config_key}`}
+                  onChange={(e) => setR2EditData(
                     r2Data?.map((c: Config) => {
                       if (c.config_key === config.config_key) {
-                        c.config_value = value
+                        c.config_value = e.target.value
                       }
                       return c
                     })
                   )}
-                  isClearable
-                  type="text"
-                  variant="bordered"
-                  label={config.config_key}
-                  placeholder={`输入${config.config_key}`}
                 />
-              ))
-            }
-            <Button
-              isLoading={loading}
-              color="primary"
-              variant="shadow"
-              onClick={() => submit()}
-              aria-label="更新"
-            >
-              更新
-            </Button>
-          </SheetDescription>
-        </SheetHeader>
+              </div>
+            ))
+          }
+        </div>
+        <Button className="cursor-pointer my-2" onClick={() => submit()} disabled={loading}>
+          {loading && <ReloadIcon className="mr-2 h-4 w-4 animate-spin"/>}
+          提交
+        </Button>
       </SheetContent>
     </Sheet>
   )

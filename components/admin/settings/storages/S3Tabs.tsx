@@ -16,6 +16,7 @@ import useSWR from 'swr'
 import { fetcher } from '~/lib/utils/fetcher'
 import { toast } from 'sonner'
 import { useButtonStore } from '~/app/providers/button-store-Providers'
+import S3EditSheet from '~/components/admin/settings/storages/S3EditSheet'
 
 export default function S3Tabs() {
   const { data, error, isValidating, mutate } = useSWR('/api/v1/settings/s3-info', fetcher
@@ -81,6 +82,7 @@ export default function S3Tabs() {
           </Table>
         </Card>
       }
+      {Array.isArray(data) && data.length > 0 && <S3EditSheet />}
     </div>
   )
 }

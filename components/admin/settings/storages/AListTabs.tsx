@@ -16,6 +16,7 @@ import { useButtonStore } from '~/app/providers/button-store-Providers'
 import { Button } from '~/components/ui/button'
 import { ReloadIcon } from '@radix-ui/react-icons'
 import React from 'react'
+import AListEditSheet from '~/components/admin/settings/storages/AListEditSheet'
 
 export default function AListTabs() {
   const { data, error, isValidating, mutate } = useSWR('/api/v1/storage/alist/info', fetcher
@@ -81,6 +82,7 @@ export default function AListTabs() {
           </Table>
         </Card>
       }
+      {Array.isArray(data) && data.length > 0 && <AListEditSheet />}
     </div>
   )
 }

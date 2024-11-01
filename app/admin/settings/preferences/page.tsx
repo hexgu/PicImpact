@@ -1,10 +1,13 @@
 'use client'
 
-import { Button, Card, CardBody, Input } from '@nextui-org/react'
 import React, { useEffect, useState } from 'react'
 import useSWR from 'swr'
 import { fetcher } from '~/lib/utils/fetcher'
 import { toast } from 'sonner'
+import { Input } from '~/components/ui/input'
+import { ReloadIcon } from '@radix-ui/react-icons'
+import { Button } from '~/components/ui/button'
+import { Label } from '~/components/ui/label'
 
 export default function Preferences() {
   const [title, setTitle] = useState('')
@@ -33,34 +36,29 @@ export default function Preferences() {
   }
 
   useEffect(() => {
-    setTitle(data?.config_value)
-  }, data)
+    setTitle(data?.config_value || '')
+  }, [data])
 
   return (
-    <Card className="flex-1" shadow="sm">
-      <CardBody className="space-y-2">
-        <Input
-          isRequired
-          isDisabled={isValidating || isLoading}
-          variant="bordered"
-          value={title}
-          type="text"
-          label="网站标题"
-          className="w-full sm:w-64"
-          onValueChange={(value: string) => setTitle(value)}
-        />
-        <div className="flex w-full sm:w-64 items-center justify-center space-x-1">
-          <Button
-            color="primary"
-            variant="bordered"
-            isLoading={loading}
-            onClick={() => updateTitle()}
-            aria-label="提交"
-          >
-            提交
-          </Button>
-        </div>
-      </CardBody>
-    </Card>
+    <div className="space-y-2">
+      <Label htmlFor="text">网站标题</Label>
+      <Input
+        disabled={isValidating || isLoading}
+        value={title || ''}
+        type="text"
+        className="w-full sm:w-64"
+        onChange={(e) => setTitle(e.target.value)}
+      />
+      <div className="flex w-full sm:w-64 items-center justify-center space-x-1">
+        <Button
+          disabled={loading}
+          onClick={() => updateTitle()}
+          aria-label="提交"
+        >
+          {loading && <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />}
+          提交
+        </Button>
+      </div>
+    </div>
 )
 }

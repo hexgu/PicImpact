@@ -16,6 +16,7 @@ import useSWR from 'swr'
 import { fetcher } from '~/lib/utils/fetcher'
 import { toast } from 'sonner'
 import { useButtonStore } from '~/app/providers/button-store-Providers'
+import R2EditSheet from '~/components/admin/settings/storages/R2EditSheet'
 
 export default function R2Tabs() {
   const { data, error, isValidating, mutate } = useSWR('/api/v1/settings/r2-info', fetcher
@@ -81,6 +82,7 @@ export default function R2Tabs() {
           </Table>
         </Card>
       }
+      {Array.isArray(data) && data.length > 0 && <R2EditSheet />}
     </div>
   )
 }
