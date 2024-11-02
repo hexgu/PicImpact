@@ -18,7 +18,7 @@ dayjs.extend(customParseFormat)
 
 export default function ExifView(props: Readonly<DataProps>) {
   return (
-    <Card>
+    <Card className="show-up-motion">
       <Table aria-label="照片 Exif 信息">
         <TableHeader>
           <TableRow>
