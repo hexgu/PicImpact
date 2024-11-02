@@ -45,7 +45,9 @@ export default function ImageView() {
           {imageViewData?.labels &&
             <div className="space-x-1">
               {imageViewData?.labels.map((tag: string) => (
-                <div key={tag} className="flex space-x-2 items-center justify-center text-sm">{tag}</div>
+                <span key={tag} className="inline-flex items-center justify-center rounded-full bg-emerald-100 px-2.5 py-0.5 text-emerald-700">
+                  <p className="whitespace-nowrap text-sm">{tag}</p>
+                </span>
               ))}
             </div>
           }

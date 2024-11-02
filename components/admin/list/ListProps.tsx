@@ -29,7 +29,6 @@ import {
   AlertDialogAction,
   AlertDialogCancel,
   AlertDialogContent,
-  AlertDialogDescription,
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
@@ -52,7 +51,6 @@ export default function ListProps(props : Readonly<ImageServerHandleProps>) {
   const { data, isLoading, mutate } = useSWRInfiniteServerHook(props, pageNum, album)
   const { data: total, mutate: totalMutate } = useSWRPageTotalServerHook(props, album)
   const [image, setImage] = useState({} as ImageType)
-  const [deleteLoading, setDeleteLoading] = useState(false)
   const [updateShowLoading, setUpdateShowLoading] = useState(false)
   const [updateImageAlbumLoading, setUpdateImageAlbumLoading] = useState(false)
   const [updateShowId, setUpdateShowId] = useState('')
@@ -63,26 +61,6 @@ export default function ListProps(props : Readonly<ImageServerHandleProps>) {
 
   const dataProps: DataProps = {
     data: data,
-  }
-
-  async function deleteImage() {
-    setDeleteLoading(true)
-    if (!image.id) return
-    try {
-      const res = await fetch(`/api/v1/images/delete/${image.id}`, {
-        method: 'DELETE',
-      }).then(res => res.json())
-      if (res?.code === 200) {
-        toast.success('删除成功！')
-        await mutate()
-      } else {
-        toast.error('删除失败！')
-      }
-    } catch (e) {
-      toast.error('删除失败！')
-    } finally {
-      setDeleteLoading(false)
-    }
   }
 
   async function updateImageShow(id: string, show: number) {
@@ -144,8 +122,6 @@ export default function ListProps(props : Readonly<ImageServerHandleProps>) {
       setUpdateImageAlbumLoading(false)
     }
   }
-
-  const fieldNames = { label: 'name', value: 'id' }
 
   return (
     <div className="flex flex-col space-y-2 h-full flex-1">
@@ -210,32 +186,17 @@ export default function ListProps(props : Readonly<ImageServerHandleProps>) {
         {Array.isArray(data) && data?.map((image: ImageType) => (
           <Card key={image.id} className="flex flex-col h-72 show-up-motion items-center">
             <div className="flex h-12 justify-between w-full p-2 space-x-2">
-              {
-                image.album_values.includes(',') ?
-                  <Popover>
-                    <PopoverTrigger className="cursor-pointer select-none inline-flex items-center justify-center rounded-full bg-emerald-100 px-2.5 py-0.5 text-emerald-700">
-                      <div className="flex space-x-2 items-center justify-center text-sm">{image.album_names.length > 8 ? image.album_names.substring(0, 8) + '...' : image.album_names}</div>
-                    </PopoverTrigger>
-                    <PopoverContent>
-                      <div className="px-1 py-2 select-none">
-                        <div className="text-small font-bold">相册</div>
-                        <div className="text-tiny">图片在对应的相册上显示</div>
-                      </div>
-                    </PopoverContent>
-                  </Popover>
-                  :
-                  <Popover>
-                    <PopoverTrigger className="cursor-pointer select-none inline-flex items-center justify-center rounded-full bg-emerald-100 px-2.5 py-0.5 text-emerald-700">
-                      <div className="flex space-x-2 items-center justify-center text-sm">{image.album_names}</div>
-                    </PopoverTrigger>
-                    <PopoverContent>
-                      <div className="px-1 py-2 select-none">
-                        <div className="text-small font-bold">相册</div>
-                        <div className="text-tiny">图片在对应的相册上显示</div>
-                      </div>
-                    </PopoverContent>
-                  </Popover>
-              }
+              <Popover>
+                <PopoverTrigger className="cursor-pointer select-none inline-flex items-center justify-center rounded-full bg-emerald-100 px-2.5 py-0.5 text-emerald-700">
+                  <div className="flex space-x-2 items-center justify-center text-sm">{image.album_name}</div>
+                </PopoverTrigger>
+                <PopoverContent>
+                  <div className="px-1 py-2 select-none">
+                    <div className="text-small font-bold">相册</div>
+                    <div className="text-tiny">图片在对应的相册上显示</div>
+                  </div>
+                </PopoverContent>
+              </Popover>
               <div className="flex items-center">
                 <Button
                   variant="outline"
@@ -284,7 +245,7 @@ export default function ListProps(props : Readonly<ImageServerHandleProps>) {
                       size="icon"
                       onClick={() => {
                         setImage(image)
-                        setImageAlbum(image.album_values)
+                        setImageAlbum(image.album_value)
                       }}
                       aria-label="绑定相册"
                     >
@@ -329,7 +290,7 @@ export default function ListProps(props : Readonly<ImageServerHandleProps>) {
                           onClick={() => updateImageAlbum()}
                           aria-label="更新"
                         >
-                          {deleteLoading && <ReloadIcon className="mr-2 h-4 w-4 animate-spin"/>}
+                          {updateImageAlbumLoading && <ReloadIcon className="mr-2 h-4 w-4 animate-spin"/>}
                           更新
                         </Button>
                       </AlertDialogAction>
@@ -347,44 +308,6 @@ export default function ListProps(props : Readonly<ImageServerHandleProps>) {
                 >
                   <Pencil size={20} />
                 </Button>
-                <AlertDialog>
-                  <AlertDialogTrigger asChild>
-                    <Button
-                      variant="outline"
-                      size="icon"
-                      onClick={() => {
-                        setImage(image)
-                      }}
-                      aria-label="删除图片"
-                    >
-                      <Trash size={20}/>
-                    </Button>
-                  </AlertDialogTrigger>
-                  <AlertDialogContent>
-                    <AlertDialogHeader>
-                      <AlertDialogTitle>确定要删掉？</AlertDialogTitle>
-                      <AlertDialogDescription>
-                        <p>图片 ID：{image.id}</p>
-                        <p>图片介绍：{image.detail || '没有介绍'}</p>
-                      </AlertDialogDescription>
-                    </AlertDialogHeader>
-                    <AlertDialogFooter>
-                      <AlertDialogCancel onClick={() => {
-                        setImage({} as ImageType)
-                      }}>Cancel</AlertDialogCancel>
-                      <AlertDialogAction>
-                        <Button
-                          disabled={deleteLoading}
-                          onClick={() => deleteImage()}
-                          aria-label="确认删除"
-                        >
-                          {deleteLoading && <ReloadIcon className="mr-2 h-4 w-4 animate-spin"/>}
-                          删除
-                        </Button>
-                      </AlertDialogAction>
-                    </AlertDialogFooter>
-                  </AlertDialogContent>
-                </AlertDialog>
               </div>
             </CardFooter>
           </Card>

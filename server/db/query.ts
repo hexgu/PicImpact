@@ -132,8 +132,8 @@ export async function fetchServerImagesListByAlbum(pageNum: number, album: strin
     const findAll = await db.$queryRaw`
       SELECT 
           image.*,
-          STRING_AGG(albums."name", ',') AS album_names,
-          STRING_AGG(albums.id::text, ',') AS album_values,
+          albums.name AS album_name,
+          albums.id AS album_value,
           (
               SELECT json_agg(row_to_json(t))
               FROM (
@@ -160,7 +160,6 @@ export async function fetchServerImagesListByAlbum(pageNum: number, album: strin
           albums.del = 0
       AND
           albums.album_value = ${album}
-      GROUP BY image.id
       ORDER BY image.sort DESC, image.created_at DESC, image.updated_at DESC
       LIMIT 8 OFFSET ${(pageNum - 1) * 8}
     `
@@ -170,8 +169,8 @@ export async function fetchServerImagesListByAlbum(pageNum: number, album: strin
   const findAll = await db.$queryRaw`
     SELECT 
         image.*,
-        STRING_AGG(albums."name", ',') AS album_names,
-        STRING_AGG(albums.id::text, ',') AS album_values,
+        albums.name AS album_name,
+        albums.id AS album_value,
         (
             SELECT json_agg(row_to_json(t))
             FROM (
@@ -194,7 +193,6 @@ export async function fetchServerImagesListByAlbum(pageNum: number, album: strin
         ON relation.album_value = albums.album_value
     WHERE 
         image.del = 0
-    GROUP BY image.id
     ORDER BY image.sort DESC, image.created_at DESC, image.updated_at DESC 
     LIMIT 8 OFFSET ${(pageNum - 1) * 8}
   `
@@ -255,8 +253,8 @@ export async function fetchClientImagesListByAlbum(pageNum: number, album: strin
   const findAll = await db.$queryRaw`
     SELECT 
         image.*,
-        STRING_AGG(albums."name", ',') AS albums_names,
-        STRING_AGG(albums.album_value, ',') AS albums_values,
+        albums.name AS album_name,
+        albums.id AS album_value,
         (
             SELECT json_agg(row_to_json(t))
             FROM (
@@ -295,7 +293,6 @@ export async function fetchClientImagesListByAlbum(pageNum: number, album: strin
         albums.show = 0
     AND
         albums.album_value = ${album}
-    GROUP BY image.id
     ORDER BY image.sort DESC, image.created_at DESC, image.updated_at DESC
     LIMIT 16 OFFSET ${(pageNum - 1) * 16}
   `
@@ -338,8 +335,8 @@ export async function fetchClientImagesListByTag(pageNum: number, tag: string) {
   const findAll = await db.$queryRaw`
     SELECT 
         image.*,
-        STRING_AGG(albums."name", ',') AS albums_names,
-        STRING_AGG(albums.album_value, ',') AS albums_values,
+        albums.name AS album_name,
+        albums.id AS album_value,
         (
             SELECT json_agg(row_to_json(t))
             FROM (
@@ -371,7 +368,6 @@ export async function fetchClientImagesListByTag(pageNum: number, tag: string) {
         albums.show = 0
     AND
         image.labels::jsonb @> ${JSON.stringify([tag])}::jsonb
-    GROUP BY image.id
     ORDER BY image.sort DESC, image.created_at DESC, image.updated_at DESC
     LIMIT 16 OFFSET ${(pageNum - 1) * 16}
   `
