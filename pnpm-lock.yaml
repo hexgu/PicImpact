@@ -80,9 +80,6 @@ importers:
       antd:
         specifier: ^5.21.6
         version: 5.21.6(date-fns@3.6.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      canvas-confetti:
-        specifier: ^1.9.3
-        version: 1.9.3
       class-variance-authority:
         specifier: ^0.7.0
         version: 0.7.0
@@ -180,9 +177,6 @@ importers:
         specifier: ^4.5.5
         version: 4.5.5(@types/react@18.3.12)(react@18.3.1)
     devDependencies:
-      '@types/canvas-confetti':
-        specifier: ^1.6.4
-        version: 1.6.4
       '@types/crypto-js':
         specifier: ^4.2.2
         version: 4.2.2
@@ -2802,9 +2796,6 @@ packages:
   '@swc/helpers@0.5.13':
     resolution: {integrity: sha512-UoKGxQ3r5kYI9dALKJapMmuK+1zWM/H17Z1+iwnNmzcJRnfFuevZs375TA5rW31pu4BS4NoSy1fRsexDXfWn5w==}
 
-  '@types/canvas-confetti@1.6.4':
-    resolution: {integrity: sha512-fNyZ/Fdw/Y92X0vv7B+BD6ysHL4xVU5dJcgzgxLdGbn8O3PezZNIJpml44lKM0nsGur+o/6+NZbZeNTt00U1uA==}
-
   '@types/cookie@0.6.0':
     resolution: {integrity: sha512-4Kh9a6B2bQciAhf7FSuMRRkUWecJgJu9nPnx3yzpsfXX/c50REIqpHY4C82bXP90qrLtXtkDxTZosYO3UpOwlA==}
 
@@ -3084,9 +3075,6 @@ packages:
 
   caniuse-lite@1.0.30001651:
     resolution: {integrity: sha512-9Cf+Xv1jJNe1xPZLGuUXLNkE1BoDkqRqYyFJ9TDYSqhduqA4hu4oR9HluGoWYQC/aj8WHjsGVV+bwkh0+tegRg==}
-
-  canvas-confetti@1.9.3:
-    resolution: {integrity: sha512-rFfTURMvmVEX1gyXFgn5QMn81bYk70qa0HLzcIOSVEyl57n6o9ItHeBtUSWdvKAPY0xlvBHno4/v3QPrT83q9g==}
 
   chalk@4.1.2:
     resolution: {integrity: sha512-oKnbhFyRIXpUuez8iBMmyEa4nbj4IOQyuhc/wy9kY7/WVPcwIO9VA668Pu8RkO7+0G76SLROeyw9CpQ061i4mA==}
@@ -8894,8 +8882,6 @@ snapshots:
     dependencies:
       tslib: 2.6.3
 
-  '@types/canvas-confetti@1.6.4': {}
-
   '@types/cookie@0.6.0': {}
 
   '@types/crypto-js@4.2.2': {}
@@ -9270,8 +9256,6 @@ snapshots:
   camelcase@5.3.1: {}
 
   caniuse-lite@1.0.30001651: {}
-
-  canvas-confetti@1.9.3: {}
 
   chalk@4.1.2:
     dependencies:
