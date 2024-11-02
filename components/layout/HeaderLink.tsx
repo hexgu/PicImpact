@@ -11,14 +11,6 @@ export default function HeaderLink(props: Readonly<DataProps>) {
   const router = useRouter()
   return (
     <>
-      <Button
-        variant="link"
-        className={pathname === '/' ? 'border-b-2 border-indigo-600 rounded-none' : 'rounded-none'}
-        onClick={() => router.push('/')}
-        aria-label="首页"
-      >
-        首页
-      </Button>
       {Array.isArray(props.data) && props.data?.map((album: AlbumType) => (
         <Button
           variant="link"

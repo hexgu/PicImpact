@@ -4,7 +4,6 @@ import React, { useState } from 'react'
 import { useSWRHydrated } from '~/hooks/useSWRHydrated'
 import { ArrowDown10, Pencil, Trash } from 'lucide-react'
 import { toast } from 'sonner'
-import DefaultAlbum from '~/components/admin/album/DefaultAlbum'
 import { AlbumType, HandleProps } from '~/types'
 import { useButtonStore } from '~/app/providers/button-store-Providers'
 import { Card, CardFooter } from '~/components/ui/card'
@@ -55,7 +54,11 @@ export default function AlbumList(props : Readonly<HandleProps>) {
     }
   }
 
-  async function updateAlbumShow(id: string, show: number) {
+  async function updateAlbumShow(id: string, album_value: string, show: number) {
+    if (album_value === '/' && show === 1) {
+      toast.warning('/ 路由不允许设置为不显示！')
+      return
+    }
     try {
       setUpdateAlbumId(id)
       setUpdateAlbumLoading(true)
@@ -85,7 +88,6 @@ export default function AlbumList(props : Readonly<HandleProps>) {
 
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-      <DefaultAlbum/>
       {data && data.map((album: AlbumType) => (
         <Card key={album.id} className="flex flex-col h-72 show-up-motion items-center">
           <div className="flex h-12 justify-start w-full p-2 space-x-2">
@@ -113,7 +115,7 @@ export default function AlbumList(props : Readonly<HandleProps>) {
                   <Switch
                     checked={album.show === 0}
                     disabled={updateAlbumLoading}
-                    onCheckedChange={(isSelected: boolean) => updateAlbumShow(album.id, isSelected ? 0 : 1)}
+                    onCheckedChange={(isSelected: boolean) => updateAlbumShow(album.id, album.album_value, isSelected ? 0 : 1)}
                   />
               }
               <Popover>

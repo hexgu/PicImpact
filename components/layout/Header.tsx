@@ -1,13 +1,13 @@
 import Logo from '~/components/layout/Logo'
 import DynamicNavbar from '~/components/layout/DynamicNavbar'
 import HeaderLink from '~/components/layout/HeaderLink'
-import { fetchTagsShow } from '~/server/db/query'
+import { fetchAlbumsShow } from '~/server/db/query'
 import { DataProps } from '~/types'
 
 export default async function Header() {
   const getData = async () => {
     'use server'
-    return await fetchTagsShow()
+    return await fetchAlbumsShow()
   }
 
   const data = await getData()

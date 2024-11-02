@@ -26,6 +26,10 @@ export default function AlbumEditSheet(props : Readonly<HandleProps>) {
       toast.error('路由必须以 / 开头！')
       return
     }
+    if (album.album_value === '/' && album.show === 1) {
+      toast.warning('/ 路由不允许设置为不显示！')
+      return
+    }
     try {
       setLoading(true)
       const res = await fetch('/api/v1/albums/update', {

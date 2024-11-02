@@ -45,15 +45,6 @@ export default function VaulDrawer(props: Readonly<DataProps>) {
                 {
                   session ?
                     <div className="space-y-1" aria-label="移动端菜单">
-                      <div
-                        key="home"
-                        onClick={() => router.push('/')}
-                        className={pathname === '/' ? activeClasses : ''}
-                      >
-                        <Drawer.Close className={closeClasses}>
-                          <Home size={20} className={iconClasses} /><p>首页</p>
-                        </Drawer.Close>
-                      </div>
                       {Array.isArray(props.data) && props.data?.map((album: AlbumType, index: any, array: AlbumType[]) => (
                         <div
                           key={album.id}

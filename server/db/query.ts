@@ -79,10 +79,7 @@ export async function fetchAListInfo() {
 export async function fetchAlbumsList() {
   const findAll = await db.albums.findMany({
     where: {
-      del: 0,
-      album_value: {
-        notIn: ['/']
-      }
+      del: 0
     },
     orderBy: [
       {
@@ -402,14 +399,11 @@ export async function fetchClientImagesPageTotalByTag(tag: string) {
   return Number(pageTotal[0].total) > 0 ? Math.ceil(Number(pageTotal[0].total) / 16) : 0
 }
 
-export async function fetchTagsShow() {
+export async function fetchAlbumsShow() {
   const findAll = await db.albums.findMany({
     where: {
       del: 0,
-      show: 0,
-      album_value: {
-        notIn: ['/']
-      }
+      show: 0
     },
     orderBy: [
       {
