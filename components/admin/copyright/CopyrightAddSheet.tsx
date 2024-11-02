@@ -1,7 +1,7 @@
 'use client'
 
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from '~/components/ui/sheet'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '~/components/ui/Select'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '~/components/ui/select'
 import { useButtonStore } from '~/app/providers/button-store-Providers'
 import { HandleProps, CopyrightType } from '~/types'
 import React, { useState } from 'react'

@@ -10,9 +10,9 @@ import { Button, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader } from
 import { useSWRInfiniteServerHook } from '~/hooks/useSWRInfiniteServerHook'
 import ListImage from '~/components/admin/list/ListImage'
 
-export default function ImageBatchDeleteSheet(props : Readonly<ImageServerHandleProps & { dataProps: DataProps } & { pageNum: number } & { tag: string }>) {
-  const { dataProps, pageNum, tag, ...restProps } = props
-  const { mutate } = useSWRInfiniteServerHook(restProps, pageNum, tag)
+export default function ImageBatchDeleteSheet(props : Readonly<ImageServerHandleProps & { dataProps: DataProps } & { pageNum: number } & { album: string }>) {
+  const { dataProps, pageNum, album, ...restProps } = props
+  const { mutate } = useSWRInfiniteServerHook(restProps, pageNum, album)
   const { imageBatchDelete, setImageBatchDelete } = useButtonStore(
     (state) => state,
   )

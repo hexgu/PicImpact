@@ -4,11 +4,7 @@ import React, { useState } from 'react'
 import { DataProps, ImageServerHandleProps, ImageType, AlbumType } from '~/types'
 import { useSWRInfiniteServerHook } from '~/hooks/useSWRInfiniteServerHook'
 import { useSWRPageTotalServerHook } from '~/hooks/useSWRPageTotalServerHook'
-import {
-  Pagination,
-  Select,
-  SelectItem
-} from '@nextui-org/react'
+import { Pagination } from '@nextui-org/react'
 import { ArrowDown10, Trash, ScanSearch, CircleHelp, Replace, Pencil } from 'lucide-react'
 import { toast } from 'sonner'
 import { useButtonStore } from '~/app/providers/button-store-Providers'
@@ -17,7 +13,6 @@ import ImageView from '~/components/admin/list/ImageView'
 import { fetcher } from '~/lib/utils/fetcher'
 import useSWR from 'swr'
 import ImageHelpSheet from '~/components/admin/list/ImageHelpSheet'
-import { Select as AntdSelect } from 'antd'
 import ListImage from '~/components/admin/list/ListImage'
 import ImageBatchDeleteSheet from '~/components/admin/list/ImageBatchDeleteSheet'
 import { Button } from '~/components/ui/button'
@@ -40,26 +35,31 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from '~/components/ui/alert-dialog'
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from '~/components/ui/select'
 
 export default function ListProps(props : Readonly<ImageServerHandleProps>) {
   const [pageNum, setPageNum] = useState(1)
-  const [tagArray, setTagArray] = useState(new Set([] as string[]))
-  const [tag, setTag] = useState('')
-  const [imageTag, setImageTag] = useState('')
-  const [imageDefaultTag, setImageDefaultTag] = useState({})
-  const { data, isLoading, mutate } = useSWRInfiniteServerHook(props, pageNum, tag)
-  const { data: total, mutate: totalMutate } = useSWRPageTotalServerHook(props, tag)
-  const [isOpen, setIsOpen] = useState(false)
-  const [isTypeOpen, setIsTypeOpen] = useState(false)
+  const [album, setAlbum] = useState('')
+  const [imageAlbum, setImageAlbum] = useState('')
+  const { data, isLoading, mutate } = useSWRInfiniteServerHook(props, pageNum, album)
+  const { data: total, mutate: totalMutate } = useSWRPageTotalServerHook(props, album)
   const [image, setImage] = useState({} as ImageType)
   const [deleteLoading, setDeleteLoading] = useState(false)
   const [updateShowLoading, setUpdateShowLoading] = useState(false)
-  const [updateImageTagLoading, setUpdateImageTagLoading] = useState(false)
+  const [updateImageAlbumLoading, setUpdateImageAlbumLoading] = useState(false)
   const [updateShowId, setUpdateShowId] = useState('')
   const { setImageEdit, setImageEditData, setImageView, setImageViewData, setImageHelp, setImageBatchDelete } = useButtonStore(
     (state) => state,
   )
-  const { data: tags, isLoading: tagsLoading } = useSWR('/api/v1/albums/get', fetcher)
+  const { data: albums, isLoading: albumsLoading } = useSWR('/api/v1/albums/get', fetcher)
 
   const dataProps: DataProps = {
     data: data,
@@ -74,7 +74,6 @@ export default function ListProps(props : Readonly<ImageServerHandleProps>) {
       }).then(res => res.json())
       if (res?.code === 200) {
         toast.success('删除成功！')
-        setIsOpen(false)
         await mutate()
       } else {
         toast.error('删除失败！')
@@ -114,13 +113,13 @@ export default function ListProps(props : Readonly<ImageServerHandleProps>) {
     }
   }
 
-  async function updateImageTag() {
-    if (!imageTag) {
+  async function updateImageAlbum() {
+    if (!imageAlbum) {
       toast.error('图片绑定的相册不能为空！')
       return
     }
     try {
-      setUpdateImageTagLoading(true)
+      setUpdateImageAlbumLoading(true)
       const res = await fetch(`/api/v1/images/update-Album`, {
         method: 'PUT',
         headers: {
@@ -128,15 +127,13 @@ export default function ListProps(props : Readonly<ImageServerHandleProps>) {
         },
         body: JSON.stringify({
           imageId: image.id,
-          tagId: Number(imageTag)
+          albumId: imageAlbum
         }),
       })
       if (res.status === 200) {
         toast.success('更新成功！')
-        setImageTag('')
-        setImageDefaultTag({})
+        setImageAlbum('')
         setImage({} as ImageType)
-        setIsTypeOpen(false)
         await mutate()
       } else {
         toast.error('更新失败！')
@@ -144,7 +141,7 @@ export default function ListProps(props : Readonly<ImageServerHandleProps>) {
     } catch (e) {
       toast.error('更新失败！')
     } finally {
-      setUpdateImageTagLoading(false)
+      setUpdateImageAlbumLoading(false)
     }
   }
 
@@ -155,29 +152,27 @@ export default function ListProps(props : Readonly<ImageServerHandleProps>) {
       <div className="flex justify-between">
         <div className="flex items-center justify-center w-full sm:w-64 md:w-80">
           <Select
-            label="相册"
-            placeholder="请选择相册"
-            className="min-w-xs"
-            size="sm"
-            isLoading={tagsLoading}
-            selectedKeys={tagArray}
-            onSelectionChange={async (keys: any) => {
-              const updatedSet = new Set([] as string[]);
-              updatedSet.add(keys?.currentKey);
-              setTagArray(updatedSet)
-              setTag(keys?.currentKey)
+            disabled={albumsLoading}
+            onValueChange={async (value: string) => {
+              setAlbum(value)
               await totalMutate()
               await mutate()
             }}
           >
-            <SelectItem key="all" value="all">
-              全部
-            </SelectItem>
-            {tags?.map((album: AlbumType) => (
-              <SelectItem key={album.album_value} value={album.album_value}>
-                {album.name}
-              </SelectItem>
-            ))}
+            <SelectTrigger>
+              <SelectValue placeholder="请选择相册" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectGroup>
+                <SelectLabel>相册</SelectLabel>
+                <SelectItem value="all">全部</SelectItem>
+                {albums?.map((album: AlbumType) => (
+                  <SelectItem key={album.album_value} value={album.album_value}>
+                    {album.name}
+                  </SelectItem>
+                ))}
+              </SelectGroup>
+            </SelectContent>
           </Select>
         </div>
         <div className="flex items-center space-x-1">
@@ -289,7 +284,7 @@ export default function ListProps(props : Readonly<ImageServerHandleProps>) {
                       size="icon"
                       onClick={() => {
                         setImage(image)
-                        setImageDefaultTag({ label: image.album_names, value: image.album_values })
+                        setImageAlbum(image.album_values)
                       }}
                       aria-label="绑定相册"
                     >
@@ -300,25 +295,38 @@ export default function ListProps(props : Readonly<ImageServerHandleProps>) {
                     <AlertDialogHeader>
                       <AlertDialogTitle>相册绑定</AlertDialogTitle>
                     </AlertDialogHeader>
-                    <AntdSelect
-                      defaultValue={imageDefaultTag}
-                      loading={isLoading}
-                      options={tags}
-                      fieldNames={fieldNames}
-                      onChange={(value) => {
-                        // @ts-ignore
-                        setImageTag(value)
+                    <Select
+                      defaultValue={imageAlbum}
+                      disabled={isLoading}
+                      onValueChange={async (value: string) => {
+                        setImageAlbum(value)
+                        await totalMutate()
+                        await mutate()
                       }}
-                    />
+                    >
+                      <SelectTrigger>
+                        <SelectValue placeholder="请选择相册" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectGroup>
+                          <SelectLabel>相册</SelectLabel>
+                          {albums?.map((album: AlbumType) => (
+                            <SelectItem key={album.id} value={album.id}>
+                              {album.name}
+                            </SelectItem>
+                          ))}
+                        </SelectGroup>
+                      </SelectContent>
+                    </Select>
                     <AlertDialogFooter>
                       <AlertDialogCancel onClick={() => {
-                        setIsOpen(false)
                         setImage({} as ImageType)
+                        setImageAlbum('')
                       }}>Cancel</AlertDialogCancel>
                       <AlertDialogAction>
                         <Button
-                          disabled={updateImageTagLoading}
-                          onClick={() => updateImageTag()}
+                          disabled={updateImageAlbumLoading}
+                          onClick={() => updateImageAlbum()}
                           aria-label="更新"
                         >
                           {deleteLoading && <ReloadIcon className="mr-2 h-4 w-4 animate-spin"/>}
@@ -362,7 +370,6 @@ export default function ListProps(props : Readonly<ImageServerHandleProps>) {
                     </AlertDialogHeader>
                     <AlertDialogFooter>
                       <AlertDialogCancel onClick={() => {
-                        setIsOpen(false)
                         setImage({} as ImageType)
                       }}>Cancel</AlertDialogCancel>
                       <AlertDialogAction>
@@ -395,10 +402,10 @@ export default function ListProps(props : Readonly<ImageServerHandleProps>) {
           await mutate()
         }}
       />
-      <ImageEditSheet {...{...props, pageNum, tag}} />
+      <ImageEditSheet {...{...props, pageNum, album}} />
       <ImageView />
       <ImageHelpSheet />
-      <ImageBatchDeleteSheet {...{...props, dataProps, pageNum, tag}} />
+      <ImageBatchDeleteSheet {...{...props, dataProps, pageNum, album}} />
     </div>
   )
 }

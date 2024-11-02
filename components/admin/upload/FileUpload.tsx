@@ -17,7 +17,7 @@ import {
   SelectItem as ShadcnSelectItem,
   SelectTrigger,
   SelectValue,
-} from '~/components/ui/Select'
+} from '~/components/ui/select'
 import { useButtonStore } from '~/app/providers/button-store-Providers'
 import { CircleHelp } from 'lucide-react'
 import FileUploadHelpSheet from '~/components/admin/upload/FileUploadHelpSheet'

@@ -1,9 +1,9 @@
 'use server'
 
 import { db } from '~/server/lib/db'
-import { TagType, ImageType, CopyrightType } from '~/types'
+import { AlbumType, ImageType, CopyrightType } from '~/types'
 
-export async function insertAlbums(album: TagType) {
+export async function insertAlbums(album: AlbumType) {
   if (!album.sort || album.sort < 0) {
     album.sort = 0
   }
@@ -33,7 +33,7 @@ export async function deleteAlbum(id: string) {
   return resultRow
 }
 
-export async function updateAlbum(album: TagType) {
+export async function updateAlbum(album: AlbumType) {
   if (!album.sort || album.sort < 0) {
     album.sort = 0
   }

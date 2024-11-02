@@ -14,9 +14,9 @@ import { ReloadIcon } from '@radix-ui/react-icons'
 import { Button } from '~/components/ui/button'
 
 
-export default function ImageEditSheet(props : Readonly<ImageServerHandleProps & { pageNum: number } & { tag: string }>) {
-  const { pageNum, tag, ...restProps } = props
-  const { mutate } = useSWRInfiniteServerHook(restProps, pageNum, tag)
+export default function ImageEditSheet(props : Readonly<ImageServerHandleProps & { pageNum: number } & { album: string }>) {
+  const { pageNum, album, ...restProps } = props
+  const { mutate } = useSWRInfiniteServerHook(restProps, pageNum, album)
   const { imageEdit, image, setImageEdit, setImageEditData } = useButtonStore(
     (state) => state,
   )
@@ -235,7 +235,7 @@ export default function ImageEditSheet(props : Readonly<ImageServerHandleProps &
             </div>
             <Switch
               checked={image?.show === 0}
-              onValueChange={(value) => setImageEditData({...image, show: value ? 0 : 1})}
+              onCheckedChange={(value) => setImageEditData({...image, show: value ? 0 : 1})}
             />
           </div>
           <Button
